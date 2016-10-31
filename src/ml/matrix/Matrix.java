@@ -4,10 +4,26 @@ import ml.matrix.exceptions.*;
 
 public class Matrix
 {
+    /**
+     * The number of rows in the matrix (0-indexed)
+     */
     private int rows;
+
+    /**
+     * The number of columns in the matrix (0-indexed)
+     */
     private int cols;
+
+    /**
+     * The array that stores the contents of the matrix
+     */
     private double[][] contents;
 
+    /**
+     * Constructs an empty matrix of size rows x cols
+     * @param rows The number of rows for the new matrix
+     * @param cols The number of columns for the new matrix
+     */
     public Matrix(int rows, int cols)
     {
         this.rows = rows;
@@ -16,6 +32,11 @@ public class Matrix
         contents = new double[rows][cols];
     }
 
+    /**
+     * Constructs a new matrix from the supplied array
+     * @param contents Constructs a matrix from the supplied array with same dimensions
+     * @throws MatrixFormatException When the supplied array is not rectangular
+     */
     public Matrix(double[][] contents) throws MatrixFormatException
     {
         this(contents.length, contents[0].length);
@@ -37,7 +58,14 @@ public class Matrix
         }
     }
 
-    public double get(int i, int j)
+    /**
+     * Gets the value of the matrix at a certain position
+     * @param i The index of the row to get (0-indexed)
+     * @param j The index of the column to get (0-indexed)
+     * @return The value of the matrix at (i, j)
+     * @throws MatrixIndexOutOfBoundsException If i or j is out of bounds of this matrix
+     */
+    public final double get(int i, int j) throws MatrixIndexOutOfBoundsException
     {
         if(i >= rows)
         {
@@ -52,7 +80,14 @@ public class Matrix
         return contents[i][j];
     }
 
-    public void set(int i, int j, double value)
+    /**
+     * Sets the value of the matrix at a certain position
+     * @param i The index of the row to set (0-indexed)
+     * @param j The index of the column to set (0-indexed)
+     * @param value The value to set
+     * @throws MatrixIndexOutOfBoundsException If i or j is out of bounds for this matrix
+     */
+    public void set(int i, int j, double value) throws MatrixIndexOutOfBoundsException
     {
         if(i >= rows)
         {
@@ -67,39 +102,46 @@ public class Matrix
         contents[i][j] = value;
     }
 
+    /**
+     * Returns the number of rows in the matrix
+     * @return The number of rows in the matrix
+     */
     public int getRows()
     {
         return rows;
     }
 
+    /**
+     * Returns the number of columns in the matrix
+     * @return The number of columns in the matrix
+     */
     public int getCols()
     {
         return cols;
     }
 
+    /**
+     * Returns the size of the matrix, formatted to "i x j"
+     * @return A string representing the size of the matrix
+     */
     public String getSize()
     {
         return rows + "x" + cols;
     }
 
+    /**
+     * Returns the matrix as an array
+     * @return The contents of the matrix as an array
+     */
     public double[][] asArray()
     {
         return contents;
     }
 
-    public Vector[] asVectors()
-    {
-        Vector[] result = new Vector[rows];
-        Matrix transposed = Matrix.transpose(this);
-
-        for(int i = 0; i < result.length; i++)
-        {
-            result[i] = new Vector(transposed.asArray()[i]);
-        }
-
-        return result;
-    }
-
+    /**
+     * Returns a string representation of the array
+     * @return All the values in the array, formatted into a string
+     */
     public String toString()
     {
         String result = "";
@@ -118,7 +160,14 @@ public class Matrix
         return result;
     }
 
-    public static Matrix add(Matrix m1, Matrix m2)
+    /**
+     * Adds two matrices together and returns the result
+     * @param m1 The first matrix to be added
+     * @param m2 The second matrix to be added
+     * @return The result of m1 + m2
+     * @throws MatrixArithmeticException If the matrices do not have the same dimensions
+     */
+    public static Matrix add(Matrix m1, Matrix m2) throws MatrixArithmeticException
     {
         if(m1.getRows() != m2.getRows() || m1.getCols() != m2.getCols())
         {
@@ -138,7 +187,14 @@ public class Matrix
         return result;
     }
 
-    public static Matrix subtract(Matrix m1, Matrix m2)
+    /**
+     * Subtracts two matrices and returns the result
+     * @param m1 The first matrix to be subtracted
+     * @param m2 The second matrix to be subtracted
+     * @return The result of m1 - m2
+     * @throws MatrixArithmeticException If the matrices do not have the same dimensions
+     */
+    public static Matrix subtract(Matrix m1, Matrix m2) throws MatrixArithmeticException
     {
         if(m1.getRows() != m2.getRows() || m1.getCols() != m2.getCols())
         {
@@ -158,6 +214,12 @@ public class Matrix
         return result;
     }
 
+    /**
+     * Multiplies a matrix by a scalar
+     * @param m The matrix to be multiplied
+     * @param scalar The scalar to be multiplied
+     * @return The value of scalar * m
+     */
     public static Matrix multiply(Matrix m, double scalar)
     {
         Matrix result = new Matrix(m.asArray());
@@ -173,7 +235,14 @@ public class Matrix
         return result;
     }
 
-    public static Matrix multiply(Matrix m1, Matrix m2)
+    /**
+     * Multiplies two matrices together
+     * @param m1 The first matrix to be multiplied
+     * @param m2 The second matrix to be multiplied
+     * @return The value of m1 * m2
+     * @throws MatrixArithmeticException If the matrices cannot be multiplied because of their dimensions
+     */
+    public static Matrix multiply(Matrix m1, Matrix m2) throws MatrixArithmeticException
     {
         if(m1.getCols() != m2.getRows())
         {
@@ -200,6 +269,11 @@ public class Matrix
         return result;
     }
 
+    /**
+     * Returns the transposition of m
+     * @param m The matrix to be transposed
+     * @return The transposed version of m
+     */
     public static Matrix transpose(Matrix m)
     {
         Matrix result = new Matrix(m.getCols(), m.getRows());
@@ -215,7 +289,13 @@ public class Matrix
         return result;
     }
 
-    public static double determinant(Matrix m)
+    /**
+     * Returns the determinant of a matrix m
+     * @param m The matrix to find the determinant for
+     * @return The determinant of m
+     * @throws MatrixFormatException If the matrix is not square
+     */
+    public static double determinant(Matrix m) throws MatrixFormatException
     {
         if(m.getRows() != m.getCols())
         {
@@ -240,7 +320,13 @@ public class Matrix
         }
     }
 
-    public static Matrix inverse(Matrix m)
+    /**
+     * Returns the inverse matrix of a matrix m
+     * @param m The matrix to invert
+     * @return The inverse of m
+     * @throws MatrixFormatException If the matrix is not square
+     */
+    public static Matrix inverse(Matrix m) throws MatrixFormatException
     {
         if(m.getRows() != m.getCols())
         {
@@ -249,13 +335,29 @@ public class Matrix
 
         double determinant = Matrix.determinant(m);
 
-        Matrix result = matrixOfMinors(m);
+        Matrix result = new Matrix(m.getRows(), m.getCols());
+
+        for(int i = 0; i < m.getRows(); i++)
+        {
+            for(int j = 0; j < m.getCols(); j++)
+            {
+                result.set(i, j, minor(m, i, j));
+            }
+        }
+
         result = Matrix.transpose(result);
         result = Matrix.multiply(result, 1 / determinant);
 
         return result;
     }
 
+    /**
+     * Returns the minor of matrix m at position (i, j)
+     * @param m The matrix to find the minor in
+     * @param i The index of the row of the minor (0- indexed)
+     * @param j The index of the column of the minor (0-indexed)
+     * @return The minor of matrix m at position (i, j)
+     */
     public static double minor(Matrix m, int i, int j)
     {
         Matrix trimmed = new Matrix(m.getRows() - 1, m.getCols() - 1);
@@ -290,46 +392,28 @@ public class Matrix
         return determinant(trimmed);
     }
 
+    /**
+     * Returns the cofactor of matrix m at position (i, j)
+     * @param m The matrix to find the cofactor in
+     * @param i The index of the row of the cofactor (0-indexed)
+     * @param j The index of the column of the cofactor (0-indexed)
+     * @return The cofactor of matrix m at position (i, j)
+     */
     public static double cofactor(Matrix m, int i, int j)
     {
         return Math.pow(-1, i + j) * minor(m, i, j);
     }
 
-    public static Matrix matrixOfMinors(Matrix m)
+    /**
+     * Returns an identity matrix of specified size
+     * @param n The size of the resulting identity matrix, which will be n x n
+     * @return An identity matrix of size n X n
+     */
+    public static Matrix identityMatrix(int n)
     {
-        Matrix result = new Matrix(m.getRows(), m.getCols());
+        Matrix result = new Matrix(n, n);
 
-        for(int i = 0; i < result.getRows(); i++)
-        {
-            for(int j = 0; j < result.getCols(); j++)
-            {
-                result.set(i, j, Matrix.minor(m, i, j));
-            }
-        }
-
-        return result;
-    }
-
-    public static Matrix matrixOfCofactors(Matrix m)
-    {
-        Matrix result = new Matrix(m.getRows(), m.getCols());
-
-        for(int i = 0; i < result.getRows(); i++)
-        {
-            for(int j = 0; j < result.getCols(); j++)
-            {
-                result.set(i, j, Matrix.cofactor(m, i, j));
-            }
-        }
-
-        return result;
-    }
-
-    public static Matrix identityMatrix(int size)
-    {
-        Matrix result = new Matrix(size, size);
-
-        for(int i = 0; i < size; i++)
+        for(int i = 0; i < n; i++)
         {
             result.set(i, i, 1);
         }

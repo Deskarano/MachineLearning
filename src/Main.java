@@ -1,23 +1,29 @@
-import ml.regression.*;
+import ml.regression.LinearRegression;
+
+import java.util.Random;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        double[][] nums =
-                {
-                        {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-                        {0, 2, 4, 6, 8, 10, 12, 14, 16, 18}
-                };
+        double[][] nums = new double[2][100];
+        Random rand = new Random();
 
-        double[] arg = {11};
+        for(int i = 0; i < nums[0].length; i++)
+        {
+            nums[0][i] = i;
+        }
+
+        for(int i = 0; i < nums[1].length; i++)
+        {
+            nums[1][i] = i + rand.nextInt(1);
+        }
 
         LinearRegression l = new LinearRegression(nums);
 
-        for(int i = 0; i < 100000; i++)
-        {
-            l.gradientDescent(.01);
-        }
+        l.gradientDescent(100000, .000001);
+
+        double[] arg = {7374};
 
         System.out.println(l.getPrediction(arg));
     }

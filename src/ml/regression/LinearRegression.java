@@ -4,67 +4,109 @@ import ml.matrix.*;
 
 public class LinearRegression
 {
+    /**
+     * The number of training samples
+     */
+    private int m;
+
+    /**
+     * The number of independent variables
+     */
+    private int n;
+
+    /**
+     * Array containing the independent data values
+     */
     private double[][] x;
+
+    /**
+     * Array containing the dependent data values
+     */
     private double[] y;
-    private Hypothesis h;
+
+    /**
+     * Vector containing the coefficients of the independent variables.
+     */
+    private Vector coefficients;
 
     //the last row in the array is assumed to be the output value
     public LinearRegression(double[][] data)
     {
-        x = new double[data.length][data[0].length];
-        y = data[data.length - 1];
+        m = data[0].length;
+        n = data.length - 1;
 
-        for(int i = 0; i < x[0].length; i++)
+        x = new double[n][m];
+        y = data[n];
+
+        coefficients = new Vector(n + 1);
+
+        for(int i = 0; i < n; i++)
         {
-            x[0][i] = 1;
+            x[i] = data[i];
         }
 
-        for(int i = 0; i < data.length - 1; i++)
+        //initialize coefficients
+        for(int i = 0; i < n; i++)
         {
-            x[i + 1] = data[i];
+            coefficients.set(i, 0);
         }
-
-        h = new Hypothesis(data.length);
     }
 
-
-    public void gradientDescent(double alpha)
+    /**
+     * Performs gradient descent on the data. Each run optimizes the coefficients by a certain amount.
+     * The cost function used is the square of the error
+     * @param trials The number of times to run gradient descent
+     * @param alpha The learning parameter
+     */
+    public void gradientDescent(int trials, double alpha)
     {
-        Vector update = new Vector(x.length);
-
-        //iterate through the different variables
-        for(int j = 0; j < x.length; j++)
+        for(int trial = 0; trial < trials; trial++)
         {
-            double sum = 0;
+            Vector update = new Vector(x.length + 1);
 
-            //iterate through every dataset
-            for(int i = 0; i < x[j].length; i++)
+            //iterate through the different variables
+            for(int j = 0; j < coefficients.getDimension(); j++)
             {
-                double[] dataSet = new double[x.length];
+                double sum = 0;
 
-                for(int k = 0; k < x.length; k++)
+                //iterate through every dataset
+                for(int i = 0; i < m; i++)
                 {
-                    dataSet[k] = x[k][i];
+                    double[] dataSet = new double[n];
+
+                    for(int k = 0; k < x.length; k++)
+                    {
+                        dataSet[k] = x[k][i];
+                    }
+
+                    double current = 0;
+
+                    current += getPrediction(dataSet) - y[i];
+
+                    if(j != 0)
+                    {
+                        current *= dataSet[j - 1];
+                    }
+                    //else, by definition, the value of dataSet[j - 1] is just 1
+
+                    sum += current;
                 }
 
-                double current = 0;
+                sum = sum * alpha / m;
+                sum = coefficients.get(j) - sum;
 
-                current += h.prediction(new Vector(dataSet)) - y[i];
-                current *= x[j][i];
-
-                sum += current;
+                update.set(j, sum);
             }
 
-            sum = sum * alpha / (x[j].length + 1);
-            sum = h.getCoefficients().get(j) - sum;
-
-            update.set(j, sum);
+            coefficients = update;
         }
-
-        h.updateCoefficients(update);
     }
 
-    //TODO: simplify code to use this method more
+    /**
+     * Gets the current prediction of the regression using the current coefficients
+     * @param args An array containing the arguments, in order, for the independent variables
+     * @return The prediction of the model for the supplied arguments
+     */
     public double getPrediction(double[] args)
     {
         double[] arguments = new double[args.length + 1];
@@ -75,16 +117,16 @@ public class LinearRegression
             arguments[i + 1] = args[i];
         }
 
-        return h.prediction(new Vector(arguments));
+        Matrix result = Matrix.multiply(Matrix.transpose(coefficients), new Vector(arguments));
+        return result.get(0, 0);
     }
 
-    private void printArray(double[] arr)
+    /**
+     * Returns the vector of coefficients
+     * @return The vector of coefficients
+     */
+    public Vector getCoefficients()
     {
-        for( double d : arr)
-        {
-            System.out.print(d + " ");
-        }
-
-        System.out.println();
+        return coefficients;
     }
 }
