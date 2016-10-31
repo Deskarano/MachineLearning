@@ -28,7 +28,13 @@ public class Matrix
             }
         }
 
-        this.contents = contents;
+        for(int i = 0; i < contents.length; i++)
+        {
+            for(int j = 0; j < contents[i].length; j++)
+            {
+                this.contents[i][j] = contents[i][j];
+            }
+        }
     }
 
     public double get(int i, int j)
@@ -71,9 +77,27 @@ public class Matrix
         return cols;
     }
 
+    public String getSize()
+    {
+        return rows + "x" + cols;
+    }
+
     public double[][] asArray()
     {
         return contents;
+    }
+
+    public Vector[] asVectors()
+    {
+        Vector[] result = new Vector[rows];
+        Matrix transposed = Matrix.transpose(this);
+
+        for(int i = 0; i < result.length; i++)
+        {
+            result[i] = new Vector(transposed.asArray()[i]);
+        }
+
+        return result;
     }
 
     public String toString()
@@ -150,7 +174,7 @@ public class Matrix
             {
                 double sum = 0;
 
-                for(int k = 0; k < result.getRows(); k++)
+                for(int k = 0; k < m1.getCols(); k++)
                 {
                     sum += m1.get(i, k) * m2.get(k, j);
                 }
@@ -164,12 +188,7 @@ public class Matrix
 
     public static Matrix transpose(Matrix m)
     {
-        if(m.getRows() != m.getCols())
-        {
-            throw new MatrixArithmeticException("Matrix must be square");
-        }
-
-        Matrix result = new Matrix(m.getRows(), m.getCols());
+        Matrix result = new Matrix(m.getCols(), m.getRows());
 
         for(int i = 0; i < m.getRows(); i++)
         {
@@ -186,7 +205,7 @@ public class Matrix
     {
         if(m.getRows() != m.getCols())
         {
-            throw new MatrixArithmeticException("Matrix must be square");
+            throw new MatrixFormatException("Matrix must be square");
         }
 
         if(m.getRows() == 2)
@@ -211,7 +230,7 @@ public class Matrix
     {
         if(m.getRows() != m.getCols())
         {
-            throw new MatrixArithmeticException("Matrix must be square");
+            throw new MatrixFormatException("Matrix must be square");
         }
 
         double determinant = Matrix.determinant(m);
