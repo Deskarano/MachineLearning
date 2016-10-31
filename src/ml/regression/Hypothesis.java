@@ -24,9 +24,9 @@ public class Hypothesis
         return result.get(0, 0);
     }
 
-    public double getCoefficient(int i)
+    public Vector getCoefficients()
     {
-        return coefficients.get(i);
+        return coefficients;
     }
 
     public void updateCoefficients(Vector update)

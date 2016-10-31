@@ -6,7 +6,7 @@ public class LinearRegression
 {
     private double[][] x;
     private double[] y;
-    public Hypothesis h;
+    private Hypothesis h;
 
     //the last row in the array is assumed to be the output value
     public LinearRegression(double[][] data)
@@ -56,7 +56,7 @@ public class LinearRegression
             }
 
             sum = sum * alpha / (x[j].length + 1);
-            sum = h.getCoefficient(j) - sum;
+            sum = h.getCoefficients().get(j) - sum;
 
             update.set(j, sum);
         }

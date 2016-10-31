@@ -138,10 +138,24 @@ public class Matrix
         return result;
     }
 
-    //TODO: fix
     public static Matrix subtract(Matrix m1, Matrix m2)
     {
-        return add(m1, Matrix.multiply(m2, -1));
+        if(m1.getRows() != m2.getRows() || m1.getCols() != m2.getCols())
+        {
+            throw new MatrixArithmeticException("Matrices do not have the same dimensions");
+        }
+
+        Matrix result = new Matrix(m1.getRows(), m1.getCols());
+
+        for(int i = 0; i < result.getRows(); i++)
+        {
+            for(int j = 0; j < result.getCols(); j++)
+            {
+                result.set(i, j, m1.get(i, j) - m2.get(i, j));
+            }
+        }
+
+        return result;
     }
 
     public static Matrix multiply(Matrix m, double scalar)
