@@ -9,12 +9,7 @@ public class Vector extends Matrix
 
     public Vector(double[] contents)
     {
-        super(contents.length, 1);
-
-        for(int i = 0; i < contents.length; i++)
-        {
-            set(i, contents[i]);
-        }
+        super(contents, contents.length, 1);
     }
 
     public void set(int i, double value)

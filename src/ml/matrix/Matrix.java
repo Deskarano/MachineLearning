@@ -51,9 +51,27 @@ public class Matrix
 
         for(int i = 0; i < contents.length; i++)
         {
-            for(int j = 0; j < contents[i].length; j++)
+            System.arraycopy(contents[i], 0, this.contents[i], 0, contents[i].length);
+        }
+    }
+
+    public Matrix(double[] nums, int rows, int cols) throws MatrixFormatException
+    {
+        this(rows, cols);
+
+        if(nums.length != rows * cols)
+        {
+            throw new MatrixFormatException("nums must fit into matrix of size rows * cols");
+        }
+
+        int numsIndex = 0;
+
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < cols; j++)
             {
-                this.contents[i][j] = contents[i][j];
+                contents[i][j] = nums[numsIndex];
+                numsIndex++;
             }
         }
     }
@@ -297,6 +315,7 @@ public class Matrix
      */
     public static double determinant(Matrix m) throws MatrixFormatException
     {
+        //TODO: fix
         if(m.getRows() != m.getCols())
         {
             throw new MatrixFormatException("Matrix must be square");
@@ -328,6 +347,7 @@ public class Matrix
      */
     public static Matrix inverse(Matrix m) throws MatrixFormatException
     {
+        //TODO: fix this method
         if(m.getRows() != m.getCols())
         {
             throw new MatrixFormatException("Matrix must be square");
