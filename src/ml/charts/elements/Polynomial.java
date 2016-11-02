@@ -101,4 +101,27 @@ public class Polynomial extends AbstractElement
             lastPixel = pixel;
         }
     }
+
+    public static Polynomial add(Polynomial p1, Polynomial p2)
+    {
+        double[] p1Coefficients = p1.getCoefficients();
+        double[] p2Coefficients = p2.getCoefficients();
+
+        double[] newCoefficients = new double[Math.max(p1Coefficients.length, p2Coefficients.length)];
+
+        for(int i = 0; i < newCoefficients.length; i++)
+        {
+            if(i < p1Coefficients.length)
+            {
+                newCoefficients[i] += p1Coefficients[i];
+            }
+
+            if(i < p2Coefficients.length)
+            {
+                newCoefficients[i] += p2Coefficients[i];
+            }
+        }
+
+        return new Polynomial(newCoefficients);
+    }
 }

@@ -5,7 +5,7 @@ public class TaylorPolynomial extends Polynomial
 {
     public TaylorPolynomial()
     {
-        this(new double[] {});
+        this(new double[]{});
     }
 
     private TaylorPolynomial(double[] coefficients)

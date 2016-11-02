@@ -78,7 +78,6 @@ public class LinearRegression
                     }
 
                     double current = 0;
-
                     current += getPrediction(dataSet) - y[i];
 
                     if(j != 0)
@@ -118,13 +117,9 @@ public class LinearRegression
         double lastCurrent = getPrediction(args);
         gradientDescent(1, alpha);
         double current = getPrediction(args);
-
-        int count = 0;
-
+        
         while(Math.abs(current - lastCurrent) > tolerance)
         {
-            count++;
-
             lastCurrent = current;
             gradientDescent(1, alpha);
             current = getPrediction(args);
