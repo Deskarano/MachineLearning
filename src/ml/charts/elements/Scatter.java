@@ -65,7 +65,7 @@ public class Scatter extends AbstractElement
     }
 
     @Override
-    public void draw(Graph g, DrawableImage img)
+    public void draw(Graph g, DrawableImage img, int color)
     {
         double[][] transposed = Matrix.transpose(new Matrix(data)).asArray();
 

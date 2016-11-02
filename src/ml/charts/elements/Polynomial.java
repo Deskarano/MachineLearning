@@ -5,22 +5,18 @@ import ml.charts.Graph;
 import ml.matrix.Matrix;
 import ml.regression.LinearRegression;
 
-import java.util.Arrays;
-
 public class Polynomial extends AbstractElement
 {
     private double[] coefficients;
-    private int color;
 
-    public Polynomial(double[] coefficients, int color)
+    public Polynomial(double[] coefficients)
     {
         this.coefficients = coefficients;
-        this.color = color;
     }
 
-    public Polynomial(LinearRegression l, int color)
+    public Polynomial(LinearRegression l)
     {
-        this(Matrix.transpose(l.getCoefficients()).asArray()[0], color);
+        this(Matrix.transpose(l.getCoefficients()).asArray()[0]);
     }
 
     public double getValue(double x)
@@ -33,6 +29,11 @@ public class Polynomial extends AbstractElement
         }
 
         return sum;
+    }
+
+    public double[] getCoefficients()
+    {
+        return coefficients;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class Polynomial extends AbstractElement
     }
 
     @Override
-    public void draw(Graph g, DrawableImage img)
+    public void draw(Graph g, DrawableImage img, int color)
     {
         double[] initCoords = g.getCoordinateFromPixel(new int[] {0, 0});
         double initResult = getValue(initCoords[0]);
@@ -74,5 +75,18 @@ public class Polynomial extends AbstractElement
 
             lastPixel = pixel;
         }
+    }
+
+    public static Polynomial derivate(Polynomial p)
+    {
+        double[] coefficients = p.getCoefficients();
+        double[] newCoefficients = new double[coefficients.length - 1];
+
+        for(int i = 1; i < coefficients.length; i++)
+        {
+            newCoefficients[i - 1] = i * coefficients[i];
+        }
+
+        return new Polynomial(newCoefficients);
     }
 }

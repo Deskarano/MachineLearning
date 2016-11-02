@@ -8,5 +8,5 @@ public abstract class AbstractElement
     public abstract double[] getPreferredDomain();
     public abstract double[] getPreferredRange();
 
-    public abstract void draw(Graph g, DrawableImage img);
+    public abstract void draw(Graph g, DrawableImage img, int color);
 }

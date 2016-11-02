@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Graph extends JLabel
 {
-    public int width;
+    private int width;
     private int height;
 
     private double[] domain;
@@ -17,6 +17,7 @@ public class Graph extends JLabel
     private double yStep;
 
     private ArrayList<AbstractElement> data;
+    private ArrayList<Integer> colors;
 
     public Graph(int width, int height)
     {
@@ -24,11 +25,13 @@ public class Graph extends JLabel
         this.height = height;
 
         data = new ArrayList<>();
+        colors = new ArrayList<>();
     }
     
-    public void add(AbstractElement e)
+    public void add(AbstractElement e, int color)
     {
         data.add(e);
+        colors.add(color);
         
         if(e.getPreferredDomain() != null)
         {
@@ -97,22 +100,26 @@ public class Graph extends JLabel
         f.setVisible(true);
     }
 
-    public void render()
+    private void render()
     {
         DrawableImage img = new DrawableImage(width, height);
 
         int[] origin = getPixelFromCoordinate(new double[] {0, 0});
 
         //axes
-        if(origin[0] >= 0 && origin[1] >= 0)
+        if(origin[0] >= 0)
         {
             img.line(origin[0], 0, origin[0], height, 0xFF000000);
+        }
+
+        if(origin[1] >= 0)
+        {
             img.line(0, origin[1], width, origin[1], 0xFF000000);
         }
 
-        for(AbstractElement s : data)
+        for(int i = 0; i < data.size(); i++)
         {
-            s.draw(this, img);
+            data.get(i).draw(this, img, colors.get(i));
         }
 
         setIcon(new ImageIcon(img));
