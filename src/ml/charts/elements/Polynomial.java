@@ -144,8 +144,27 @@ public class Polynomial extends AbstractElement
         return new Polynomial(newCoefficients);
     }
 
+    public static Polynomial multiply(Polynomial p1, Polynomial p2)
+    {
+        double[] p1Coefficients = p1.getCoefficients();
+        double[] p2Coefficients = p2.getCoefficients();
+
+        double[] newCoefficients = new double[p1Coefficients.length + p2Coefficients.length];
+
+        for(int i = 0; i < p1Coefficients.length; i++)
+        {
+            for(int j = 0; j < p2Coefficients.length; j++)
+            {
+                newCoefficients[i + j] = p1Coefficients[i] * p2Coefficients[j];
+            }
+        }
+
+        return new Polynomial(newCoefficients);
+    }
+
     public static Polynomial divide(Polynomial p, double constant)
     {
         return multiply(p, 1 / constant);
     }
+
 }

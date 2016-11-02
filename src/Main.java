@@ -7,13 +7,14 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Polynomial p = new Polynomial(new double[]{0, 0, 1});
-        Polynomial p2 = new Polynomial((new double[] {1}));
-        Polynomial subtract = Polynomial.add(p, p2);
+        Polynomial p1 = new Polynomial(new double[]{1, 0, 1});
+        Polynomial p2 = new Polynomial((new double[] {0, 1}));
+
+        Polynomial result = Polynomial.multiply(p1, p2);
 
         Graph g = new Graph(500, 500);
 
-        g.add(subtract, 0xFF0000FF);
+        g.add(result, 0xFF0000FF);
 
         g.display();
     }
