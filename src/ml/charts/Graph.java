@@ -1,15 +1,13 @@
 package ml.charts;
 
-import ml.charts.elements.AbstractSeries;
+import ml.charts.elements.AbstractElement;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Graph extends JLabel
 {
-    private static double COMPRESSION = .5;
-    private int width;
+    public int width;
     private int height;
 
     private double[] domain;
@@ -18,7 +16,7 @@ public class Graph extends JLabel
     private double xStep;
     private double yStep;
 
-    private ArrayList<AbstractSeries> data;
+    private ArrayList<AbstractElement> data;
 
     public Graph(int width, int height)
     {
@@ -28,7 +26,7 @@ public class Graph extends JLabel
         data = new ArrayList<>();
     }
     
-    public void add(AbstractSeries e)
+    public void add(AbstractElement e)
     {
         data.add(e);
         
@@ -62,16 +60,27 @@ public class Graph extends JLabel
             }
         }
 
-        domain[0]--;
-        domain[1]++;
-        range[0]--;
-        range[1]++;
+        updateSteps();
+
+        double xpad = 10 / xStep;
+        double ypad = 10 / yStep;
+
+        domain[0] -= xpad;
+        domain[1] += xpad;
+        range[0] -= ypad;
+        range[1] += ypad;
 
         updateSteps();
     }
 
     private void updateSteps()
     {
+        if(domain == null)
+        {
+            domain = new double[] {-5, 5};
+            range = new double[] {-5, 5};
+        }
+
         xStep = Math.abs((double) width / (domain[1] - domain[0]));
         yStep = Math.abs((double) height / (range[1] - range[0]));
     }
@@ -88,16 +97,20 @@ public class Graph extends JLabel
         f.setVisible(true);
     }
 
-    public Dimension getPreferredSize()
-    {
-        return new Dimension(width, height);
-    }
-
     public void render()
     {
         DrawableImage img = new DrawableImage(width, height);
 
-        for(AbstractSeries s : data)
+        int[] origin = getPixelFromCoordinate(new double[] {0, 0});
+
+        //axes
+        if(origin[0] >= 0 && origin[1] >= 0)
+        {
+            img.line(origin[0], 0, origin[0], height, 0xFF000000);
+            img.line(0, origin[1], width, origin[1], 0xFF000000);
+        }
+
+        for(AbstractElement s : data)
         {
             s.draw(this, img);
         }
@@ -107,12 +120,41 @@ public class Graph extends JLabel
 
     public int[] getPixelFromCoordinate(double[] coords)
     {
-
         return new int[] {(int)((coords[0] - domain[0]) * xStep), (int)((coords[1] - range[0]) * yStep)};
     }
 
     public double[] getCoordinateFromPixel(int[] pixel)
     {
-        return new double[] {pixel[0] / xStep, pixel[1] / yStep};
+        return new double[] {domain[0] + pixel[0] / xStep, domain[1] + pixel[1] / yStep};
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public double[] getDomain()
+    {
+        return domain;
+    }
+
+    public double[] getRange()
+    {
+        return range;
+    }
+
+    public double getxStep()
+    {
+        return xStep;
+    }
+
+    public double getyStep()
+    {
+        return yStep;
     }
 }

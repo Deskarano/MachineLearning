@@ -6,7 +6,7 @@ import ml.charts.exceptions.DataFormatException;
 import ml.matrix.Matrix;
 
 
-public class Scatter extends AbstractSeries
+public class Scatter extends AbstractElement
 {
     private double[][] data;
 
@@ -19,7 +19,7 @@ public class Scatter extends AbstractSeries
         this(data, 3, 0xFFFF0000, true);
     }
 
-    public Scatter(double[][] data, int pointSize, int color, boolean filled)
+    public Scatter(double[][] data, int pointSize, int color, boolean filled) throws DataFormatException
     {
         if(data.length > 2)
         {
@@ -33,6 +33,7 @@ public class Scatter extends AbstractSeries
         this.filled = filled;
     }
 
+
     @Override
     public double[] getPreferredDomain()
     {
@@ -45,7 +46,7 @@ public class Scatter extends AbstractSeries
             if(d > maxX) maxX = d;
         }
 
-        return new double[] {minX, maxX};
+        return new double[]{minX, maxX};
     }
 
     @Override
@@ -60,7 +61,7 @@ public class Scatter extends AbstractSeries
             if(d > maxY) maxY = d;
         }
 
-        return new double[] {minY, maxY};
+        return new double[]{minY, maxY};
     }
 
     @Override
@@ -71,7 +72,9 @@ public class Scatter extends AbstractSeries
         for(double[] coord : transposed)
         {
             int[] pixel = g.getPixelFromCoordinate(coord);
+
             img.circle(pixel[0], pixel[1], pointSize, color, filled);
+
         }
     }
 }

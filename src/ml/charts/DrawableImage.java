@@ -14,9 +14,15 @@ public class DrawableImage extends BufferedImage
         super(width, height, BufferedImage.TYPE_INT_ARGB);
     }
 
+    /**
+     * Overriden setRGB method so that indexing starts from the bottom left corner
+     * @param x
+     * @param y
+     * @param argb
+     */
     public void setRGB(int x, int y, int argb)
     {
-        super.setRGB(x, super.getHeight() - y, argb);
+        super.setRGB(x, super.getHeight() - y - 1, argb);
     }
 
     /**
@@ -87,6 +93,7 @@ public class DrawableImage extends BufferedImage
      */
     public void circle(int centerX, int centerY, int r, int argb, boolean filled)
     {
+        //TODO: this can be optimized somehow. Sometimes it calls setRGB() with repeating values
         if(!filled)
         {
             //the 10 here is an arbitrary magic number that ensures circles are drawn nicely
