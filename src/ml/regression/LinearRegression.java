@@ -53,7 +53,6 @@ public class LinearRegression
     /**
      * Performs gradient descent on the data. Each run optimizes the coefficients by a certain amount.
      * The cost function used is the square of the error
-     *
      * @param trials The number of times to run gradient descent
      * @param alpha  The learning rate
      * @throws DivergenceException If the regression diverges
@@ -103,6 +102,32 @@ public class LinearRegression
             }
 
             coefficients = update;
+        }
+    }
+
+    /**
+     * Performs gradient descent on the data until the change in prediction is less than the tolerance.
+     * The cost function used is the square of the error
+     * @param args The argument(s) to check the tolerance with
+     * @param tolerance The tolerance of this gradient descent
+     * @param alpha The learning rate
+     * @throws DivergenceException If the regression diverges
+     */
+    public void gradientDescent(double[] args, double tolerance, double alpha) throws DivergenceException
+    {
+        double lastCurrent = getPrediction(args);
+        gradientDescent(1, alpha);
+        double current = getPrediction(args);
+
+        int count = 0;
+
+        while(Math.abs(current - lastCurrent) > tolerance)
+        {
+            count++;
+
+            lastCurrent = current;
+            gradientDescent(1, alpha);
+            current = getPrediction(args);
         }
     }
 

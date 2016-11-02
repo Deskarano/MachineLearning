@@ -14,8 +14,10 @@ public class Main
                         {0, 2, 2, 3, 4, 3, 6, 7, 11, 9, 10}
                 };
 
+        double[] arg = {5};
+
         LinearRegression l = new LinearRegression(data);
-        l.gradientDescent(10000, .01);
+        l.gradientDescent(arg, .000001, .001);
 
         Scatter plot = new Scatter(data, 4, 0xFFFF0000, true);
         Polynomial reg = new Polynomial(l, 0xFF0000FF);
