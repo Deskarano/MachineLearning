@@ -31,6 +31,31 @@ public class Polynomial extends AbstractElement
         return sum;
     }
 
+    public String toString()
+    {
+        String result = "y = " + coefficients[0] + " + ";
+
+        for(int i = 1; i < coefficients.length; i++)
+        {
+            if(coefficients[i] != 0)
+            {
+                if(coefficients[i] != 1)
+                {
+                    result += coefficients[i];
+                }
+
+                result += "x^" + i;
+
+                if(i != coefficients.length - 1)
+                {
+                    result += " + ";
+                }
+            }
+        }
+
+        return result;
+    }
+
     public double[] getCoefficients()
     {
         return coefficients;
@@ -70,23 +95,10 @@ public class Polynomial extends AbstractElement
             catch(Exception e)
             {
                 //TODO: implement range checking before drawing the line
-                System.out.println(i);
+                //System.out.println(i);
             }
 
             lastPixel = pixel;
         }
-    }
-
-    public static Polynomial derivate(Polynomial p)
-    {
-        double[] coefficients = p.getCoefficients();
-        double[] newCoefficients = new double[coefficients.length - 1];
-
-        for(int i = 1; i < coefficients.length; i++)
-        {
-            newCoefficients[i - 1] = i * coefficients[i];
-        }
-
-        return new Polynomial(newCoefficients);
     }
 }
