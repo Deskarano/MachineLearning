@@ -117,7 +117,7 @@ public class LinearRegression
         double lastCurrent = getPrediction(args);
         gradientDescent(1, alpha);
         double current = getPrediction(args);
-        
+
         while(Math.abs(current - lastCurrent) > tolerance)
         {
             lastCurrent = current;

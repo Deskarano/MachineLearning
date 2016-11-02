@@ -7,20 +7,14 @@ public class Main
 {
     public static void main(String[] args)
     {
-        double[][] data =
-                {
-                        {0, 1, 2, 3, 2.6},
-                        {0, 2, 1, 3, 5}
-                };
+        Polynomial p = new Polynomial(new double[]{0, 0, 1});
+        Polynomial p2 = new Polynomial((new double[] {1}));
+        Polynomial subtract = Polynomial.add(p, p2);
 
-        Scatter s = new Scatter(data);
         Graph g = new Graph(500, 500);
 
-        LinearRegression l = new LinearRegression(data);
-        l.gradientDescent(10000, .001);
+        g.add(subtract, 0xFF0000FF);
 
-        g.add(s, 0xFFFF0000);
-        g.add(new Polynomial(l), 0xFF0000FF);
         g.display();
     }
 }

@@ -124,4 +124,28 @@ public class Polynomial extends AbstractElement
 
         return new Polynomial(newCoefficients);
     }
+
+    public static Polynomial subtract(Polynomial p1, Polynomial p2)
+    {
+        Polynomial inverted = multiply(p2, -1);
+        return add(p1, inverted);
+    }
+
+    public static Polynomial multiply(Polynomial p, double constant)
+    {
+        double[] coefficients = p.getCoefficients();
+        double[] newCoefficients = new double[coefficients.length];
+
+        for(int i = 0; i < coefficients.length; i++)
+        {
+            newCoefficients[i] = coefficients[i] * constant;
+        }
+
+        return new Polynomial(newCoefficients);
+    }
+
+    public static Polynomial divide(Polynomial p, double constant)
+    {
+        return multiply(p, 1 / constant);
+    }
 }
