@@ -56,8 +56,9 @@ public class LinearRegression
      *
      * @param trials The number of times to run gradient descent
      * @param alpha  The learning rate
+     * @throws DivergenceException If the regression diverges
      */
-    public void gradientDescent(int trials, double alpha)
+    public void gradientDescent(int trials, double alpha) throws DivergenceException
     {
         for(int trial = 0; trial < trials; trial++)
         {
@@ -92,6 +93,11 @@ public class LinearRegression
 
                 error = error * alpha / m;
                 error = coefficients.get(j) - error;
+
+                if(Double.isNaN(error))
+                {
+                    throw new DivergenceException("Regression diverged. Use smaller alpha");
+                }
 
                 update.set(j, error);
             }
