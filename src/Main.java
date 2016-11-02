@@ -1,17 +1,17 @@
 import ml.charts.Graph;
 import ml.charts.elements.Polynomial;
+import ml.stats.OneVarStats;
+import ml.stats.Stats;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        Polynomial p1 = new Polynomial(new double[]{1, 1, 2, 3, 5, 8, 13, 21, 34});
-        
-        Graph g = new Graph(500, 500);
+        double[] data = {1, 2, 3, 4, 5, 6};
+        data = Stats.normalize(data);
+        OneVarStats stats = new OneVarStats(data);
 
-        g.add(p1, 0xFFFF0000);
-
-        g.display();
+        System.out.println(stats);
     }
 }
 
