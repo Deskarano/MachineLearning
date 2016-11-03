@@ -1,23 +1,35 @@
 import ml.charts.Graph;
-import ml.charts.elements.Polynomial;
-import ml.charts.elements.Rational;
-import ml.charts.elements.Scatter;
-import ml.regression.LinearRegression;
+
+import ml.charts.elements.functions.*;
+
 
 public class Main
 {
     public static void main(String[] args)
     {
-        Polynomial p1 = new Polynomial(new double[]{1});
-        Polynomial p2 = new Polynomial((new double[] {0, 1}));
-
-        Rational r = new Rational(p1, p2);
+        TrigFunction cos = new TrigFunction(TrigFunction.COT);
 
         Graph g = new Graph(500, 500);
-
-        g.add(r, 0xFF0000FF);
+        g.add(cos, 0xFFFF0000);
 
         g.display();
+    }
+
+    public static int factorial(int n)
+    {
+        if(n == 0)
+        {
+            return 1;
+        }
+
+        if(n < 2)
+        {
+            return n;
+        }
+        else
+        {
+            return n * factorial(n - 1);
+        }
     }
 }
 

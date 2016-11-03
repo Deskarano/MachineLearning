@@ -1,6 +1,6 @@
 package ml.charts;
 
-import ml.charts.elements.AbstractElement;
+import ml.charts.elements.Graphable;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class Graph extends JLabel
     private double xStep;
     private double yStep;
 
-    private ArrayList<AbstractElement> data;
+    private ArrayList<Graphable> data;
     private ArrayList<Integer> colors;
 
     public Graph(int width, int height)
@@ -28,38 +28,38 @@ public class Graph extends JLabel
         colors = new ArrayList<>();
     }
     
-    public void add(AbstractElement e, int color)
+    public void add(Graphable g, int color)
     {
-        data.add(e);
+        data.add(g);
         colors.add(color);
         
-        if(e.getPreferredDomain() != null)
+        if(g.getPreferredDomain() != null)
         {
             if(domain != null)
             {
-                double minX = Math.min(domain[0], e.getPreferredDomain()[0]);
-                double maxX = Math.max(domain[1], e.getPreferredDomain()[1]);
+                double minX = Math.min(domain[0], g.getPreferredDomain()[0]);
+                double maxX = Math.max(domain[1], g.getPreferredDomain()[1]);
                 
                 domain = new double[] {minX, maxX};
             }
             else
             {
-                domain = e.getPreferredDomain();
+                domain = g.getPreferredDomain();
             }
         }
 
-        if(e.getPreferredRange() != null)
+        if(g.getPreferredRange() != null)
         {
             if(range != null)
             {
-                double minX = Math.min(range[0], e.getPreferredRange()[0]);
-                double maxX = Math.max(range[1], e.getPreferredRange()[1]);
+                double minX = Math.min(range[0], g.getPreferredRange()[0]);
+                double maxX = Math.max(range[1], g.getPreferredRange()[1]);
 
                 range = new double[] {minX, maxX};
             }
             else
             {
-                range = e.getPreferredRange();
+                range = g.getPreferredRange();
             }
         }
 
@@ -143,25 +143,5 @@ public class Graph extends JLabel
     public int getHeight()
     {
         return height;
-    }
-
-    public double[] getDomain()
-    {
-        return domain;
-    }
-
-    public double[] getRange()
-    {
-        return range;
-    }
-
-    public double getxStep()
-    {
-        return xStep;
-    }
-
-    public double getyStep()
-    {
-        return yStep;
     }
 }

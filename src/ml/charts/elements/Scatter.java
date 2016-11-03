@@ -6,7 +6,7 @@ import ml.charts.exceptions.DataFormatException;
 import ml.matrix.Matrix;
 
 
-public class Scatter extends AbstractElement
+public class Scatter implements Graphable
 {
     private double[][] data;
 
