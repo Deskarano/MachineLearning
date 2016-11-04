@@ -6,7 +6,8 @@ public class DrawableImage extends BufferedImage
 {
     /**
      * Creates a new DrawableImage with specified dimensions
-     * @param width The width of the new DrawableImage
+     *
+     * @param width  The width of the new DrawableImage
      * @param height The height of the new DrawableImage
      */
     public DrawableImage(int width, int height)
@@ -16,21 +17,25 @@ public class DrawableImage extends BufferedImage
 
     /**
      * Overriden setRGB method so that indexing starts from the bottom left corner
+     *
      * @param x
      * @param y
      * @param argb
      */
     public void setRGB(int x, int y, int argb)
     {
+
         super.setRGB(x, super.getHeight() - y - 1, argb);
+
     }
 
     /**
      * Draws a line of color argb from (x1, y1) to (x2, y2) on the DrawableImage
-     * @param x1 The x-coordinate of the pixel to draw the line from
-     * @param y1 The y-coordinate of the pixel to draw the line from
-     * @param x2 The x-coordinate of the pixel to draw the line to
-     * @param y2 The y-coordinate of the pixel to draw the line to
+     *
+     * @param x1   The x-coordinate of the pixel to draw the line from
+     * @param y1   The y-coordinate of the pixel to draw the line from
+     * @param x2   The x-coordinate of the pixel to draw the line to
+     * @param y2   The y-coordinate of the pixel to draw the line to
      * @param argb The color (in ARGB format) to draw the line with
      */
     public void line(int x1, int y1, int x2, int y2, int argb)
@@ -58,11 +63,12 @@ public class DrawableImage extends BufferedImage
 
     /**
      * Draws a rectangle of color argb with corners (x1, y1) and (x2, y2) on the DrawableImage
-     * @param x1 The x-coordinate of the first corner of the rectangle
-     * @param y1 The y-coordinate of the first corner of the rectangle
-     * @param x2 The x-coordinate of the second corner of the rectangle
-     * @param y2 The y-coordinate of the second corner of the rectangle
-     * @param argb The color (in ARGB format) to draw the rectangle with
+     *
+     * @param x1     The x-coordinate of the first corner of the rectangle
+     * @param y1     The y-coordinate of the first corner of the rectangle
+     * @param x2     The x-coordinate of the second corner of the rectangle
+     * @param y2     The y-coordinate of the second corner of the rectangle
+     * @param argb   The color (in ARGB format) to draw the rectangle with
      * @param filled Indicates whether the rectangle should be filled or not
      */
     public void rectangle(int x1, int y1, int x2, int y2, int argb, boolean filled)
@@ -85,11 +91,12 @@ public class DrawableImage extends BufferedImage
 
     /**
      * Draws a circle of color argb with center (centerX, centerY) and radius r on the DrawableImage
+     *
      * @param centerX The x-coordinate of the center of the circle
      * @param centerY The y-coordinate of the center of the circle
-     * @param r The radius of the circle
-     * @param argb The color (in ARGB format) to draw the circle with
-     * @param filled Indicates whether the circle should be filled or not
+     * @param r       The radius of the circle
+     * @param argb    The color (in ARGB format) to draw the circle with
+     * @param filled  Indicates whether the circle should be filled or not
      */
     public void circle(int centerX, int centerY, int r, int argb, boolean filled)
     {
@@ -124,6 +131,7 @@ public class DrawableImage extends BufferedImage
 
     /**
      * Returns the primary sign of the number
+     *
      * @param num The number to return the sign for
      * @return -1 if the number is negative, 1 if it is positive, and 0 if it is 0
      */

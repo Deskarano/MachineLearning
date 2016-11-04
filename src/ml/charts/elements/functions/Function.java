@@ -20,6 +20,7 @@ public abstract class Function implements Graphable
         return null;
     }
 
+    @Override
     public void draw(Graph g, DrawableImage img, int color)
     {
         int width = g.getWidth();
@@ -52,31 +53,31 @@ public abstract class Function implements Graphable
 
     public static Function add(Function f1, Function f2)
     {
-        return new AddedFunction(f1, f2);
+        return new OperatedFunction(f1, f2, OperatedFunction.ADD);
     }
 
     public static Function subtract(Function f1, Function f2)
     {
-        return new SubtractedFunction(f1, f2);
+        return new OperatedFunction(f1, f2, OperatedFunction.SUBTRACT);
     }
 
     public static Function multiply(Function f1, Function f2)
     {
-        return new MultipliedFunction(f1, f2);
+        return new OperatedFunction(f1, f2, OperatedFunction.MULTIPLY);
     }
 
     public static Function divide(Function f1, Function f2)
     {
-        return new DividedFunction(f1, f2);
+        return new OperatedFunction(f1, f2, OperatedFunction.DIVIDE);
     }
 
     public static Function pow(Function f1, Function f2)
     {
-        return new PowerFunction(f1, f2);
+        return new OperatedFunction(f1, f2, OperatedFunction.POW);
     }
 
     public static Function concatenate(Function f1, Function f2)
     {
-        return new ConcatenatedFunction(f1, f2);
+        return new OperatedFunction(f1, f2, OperatedFunction.CONCATENATE);
     }
 }

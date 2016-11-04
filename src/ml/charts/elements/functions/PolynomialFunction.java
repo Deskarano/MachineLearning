@@ -7,7 +7,7 @@ public class PolynomialFunction extends Function
 {
     private double[] coefficients;
 
-    public PolynomialFunction(double[] coefficients)
+    public PolynomialFunction(double... coefficients)
     {
         this.coefficients = coefficients;
     }

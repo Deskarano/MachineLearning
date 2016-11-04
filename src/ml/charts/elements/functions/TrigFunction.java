@@ -9,30 +9,30 @@ public class TrigFunction extends Function
     public static final int CSC = 4;
     public static final int COT = 5;
 
-    public static Function cos;
-    public static Function sin;
+    private static Function cos;
+    private static Function sin;
 
-    private int type;
     private Function base;
 
     public TrigFunction(int type)
     {
-        this.type = type;
-        if(cos == null)
+        if(cos == null || sin == null)
         {
-            double[] taylorCoefficients = new double[14];
+            //generate the taylor polynomial of cos at x = pi (so we can compress all arguments to the range [0, 2pi)
+            double[] taylorCoefficients = new double[100];
             double[] shift = new double[]{-Math.PI, 1};
 
+            //this is not computationally expensive, so we can calculate a lot of terms
             for(int n = 0; n < taylorCoefficients.length; n++)
             {
                 if(n % 2 == 0)
                 {
-                    taylorCoefficients[n] = Math.pow(-1, n / 2) / (double) factorial(n);
+                    taylorCoefficients[n] = Math.pow(-1, n / 2 + 1) / factorial(n);
                 }
             }
 
             cos = Function.concatenate(new PolynomialFunction(taylorCoefficients), new PolynomialFunction(shift));
-            sin = Function.concatenate(cos, new PolynomialFunction(new double[]{Math.PI / 2, 1}));
+            sin = Function.concatenate(cos, new PolynomialFunction(new double[]{-Math.PI / 2, 1}));
         }
 
         switch(type)
@@ -50,11 +50,11 @@ public class TrigFunction extends Function
                 break;
 
             case SEC:
-                base = Function.divide(new PolynomialFunction(new double[]{1}), cos);
+                base = Function.divide(new PolynomialFunction(1), cos);
                 break;
 
             case CSC:
-                base = Function.divide(new PolynomialFunction(new double[]{1}), sin);
+                base = Function.divide(new PolynomialFunction(1), sin);
                 break;
 
             case COT:
@@ -66,17 +66,20 @@ public class TrigFunction extends Function
     @Override
     public double getValue(double x)
     {
-        if(type == SIN || type == TAN || type == CSC || type == COT)
+        while(x < 0)
         {
-            return sign(x) * base.getValue(Math.abs(x) % (2 * Math.PI));
+            x += (2 * Math.PI);
         }
-        else
+
+        while(x > 2 * Math.PI)
         {
-            return -base.getValue(Math.abs(x) % (2 * Math.PI));
+            x -= (2 * Math.PI);
         }
+
+        return base.getValue(x);
     }
 
-    private static int factorial(int n)
+    private static double factorial(double n)
     {
         if(n == 0)
         {
@@ -87,12 +90,4 @@ public class TrigFunction extends Function
             return n * factorial(n - 1);
         }
     }
-
-    private int sign(double num)
-    {
-        if(num < 0) return -1;
-        if(num > 0) return 1;
-        return 0;
-    }
-
 }

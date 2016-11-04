@@ -78,7 +78,7 @@ public class Graph extends JLabel
 
     private void updateSteps()
     {
-        if(domain == null)
+        if(domain == null || range == null)
         {
             domain = new double[] {-5, 5};
             range = new double[] {-5, 5};
