@@ -53,6 +53,7 @@ public class LinearRegression
     /**
      * Performs gradient descent on the data. Each run optimizes the coefficients by a certain amount.
      * The cost function used is the square of the error
+     *
      * @param trials The number of times to run gradient descent
      * @param alpha  The learning rate
      * @throws DivergenceException If the regression diverges
@@ -107,12 +108,13 @@ public class LinearRegression
     /**
      * Performs gradient descent on the data until the change in prediction is less than the tolerance.
      * The cost function used is the square of the error
-     * @param args The argument(s) to check the tolerance with
+     *
+     * @param args      The argument(s) to check the tolerance with
      * @param tolerance The tolerance of this gradient descent
-     * @param alpha The learning rate
+     * @param alpha     The learning rate
      * @throws DivergenceException If the regression diverges
      */
-    public void gradientDescent(double[] args, double tolerance, double alpha) throws DivergenceException
+    public void gradientDescent(double tolerance, double alpha, double... args) throws DivergenceException
     {
         double lastCurrent = getPrediction(args);
         gradientDescent(1, alpha);
@@ -133,7 +135,7 @@ public class LinearRegression
      * @return The prediction of the model for the supplied arguments
      * @throws RegressionFormatException If the argument array is of the wrong size
      */
-    public double getPrediction(double[] args) throws RegressionFormatException
+    public double getPrediction(double... args) throws RegressionFormatException
     {
         if(args.length != coefficients.getDimension() - 1)
         {
@@ -158,4 +160,5 @@ public class LinearRegression
     {
         return coefficients;
     }
+
 }
