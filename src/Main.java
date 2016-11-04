@@ -1,20 +1,24 @@
 import ml.charts.Graph;
 
 import ml.charts.elements.functions.*;
+import ml.matrix.Matrix;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        PolynomialFunction e = new PolynomialFunction(Math.E);
-        PolynomialFunction x = new PolynomialFunction(0, 1);
+        double[][] nums1 =
+                {
+                        {5, 2, 3, 4},
+                        {4, 5, 6, 2},
+                        {7, 8, 9, 1},
+                        {9, 8, 5, 4}
+                };
 
-        Function result = Function.pow(e, x);
+        Matrix m1 = new Matrix(nums1);
 
-        Graph g = new Graph(500, 500);
-        g.add(result, 0xFF0000FF);
+        System.out.println(m1.determinant());
 
-        g.display();
     }
 }
 

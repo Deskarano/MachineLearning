@@ -21,6 +21,7 @@ public class Matrix
 
     /**
      * Constructs an empty matrix of size rows x cols
+     *
      * @param rows The number of rows for the new matrix
      * @param cols The number of columns for the new matrix
      */
@@ -34,6 +35,7 @@ public class Matrix
 
     /**
      * Constructs a new matrix from the supplied array
+     *
      * @param contents Constructs a matrix from the supplied array with same dimensions
      * @throws MatrixFormatException When the supplied array is not rectangular
      */
@@ -78,6 +80,7 @@ public class Matrix
 
     /**
      * Gets the value of the matrix at a certain position
+     *
      * @param i The index of the row to get (0-indexed)
      * @param j The index of the column to get (0-indexed)
      * @return The value of the matrix at (i, j)
@@ -100,8 +103,9 @@ public class Matrix
 
     /**
      * Sets the value of the matrix at a certain position
-     * @param i The index of the row to set (0-indexed)
-     * @param j The index of the column to set (0-indexed)
+     *
+     * @param i     The index of the row to set (0-indexed)
+     * @param j     The index of the column to set (0-indexed)
      * @param value The value to set
      * @throws MatrixIndexOutOfBoundsException If i or j is out of bounds for this matrix
      */
@@ -122,6 +126,7 @@ public class Matrix
 
     /**
      * Returns the number of rows in the matrix
+     *
      * @return The number of rows in the matrix
      */
     public int getRows()
@@ -131,6 +136,7 @@ public class Matrix
 
     /**
      * Returns the number of columns in the matrix
+     *
      * @return The number of columns in the matrix
      */
     public int getCols()
@@ -139,7 +145,88 @@ public class Matrix
     }
 
     /**
+     * Returns the determinant
+     *
+     * @return The determinant of this matrix
+     * @throws MatrixFormatException If the matrix is not square
+     */
+    public double determinant() throws MatrixFormatException
+    {
+        if(rows != cols)
+        {
+            throw new MatrixFormatException("Matrix must be square");
+        }
+
+        if(rows == 2)
+        {
+            return contents[0][0] * contents[1][1] - contents[0][1] * contents[1][0];
+        }
+        else
+        {
+            double sum = 0;
+
+            //iterate along the top row since row/col choice is arbitrary
+            for(int i = 0; i < cols; i++)
+            {
+                sum += contents[0][i] * cofactor(0, i);
+            }
+
+            return sum;
+        }
+    }
+
+    /**
+     * Returns the minor at position (i, j)
+     *
+     * @param i The index of the row of the minor (0- indexed)
+     * @param j The index of the column of the minor (0-indexed)
+     * @return The minor of matrix m at position (i, j)
+     */
+    public double minor(int i, int j)
+    {
+        Matrix trimmed = new Matrix(rows - 1, cols - 1);
+
+        int rowIndex = 0;
+        int colIndex = 0;
+
+        for(int a = 0; a < rows; a++)
+        {
+            if(a == i) a++;
+
+            for(int b = 0; b < cols; b++)
+            {
+                if(b == j) b++;
+
+                if(a < rows && b < cols)
+                {
+                    trimmed.set(rowIndex, colIndex, contents[a][b]);
+                }
+
+                colIndex++;
+            }
+
+            colIndex = 0;
+            rowIndex++;
+        }
+
+        return trimmed.determinant();
+    }
+
+    /**
+     * Returns the cofactor at position (i, j)
+     *
+     * @param i The index of the row of the cofactor (0-indexed)
+     * @param j The index of the column of the cofactor (0-indexed)
+     * @return The cofactor of matrix m at position (i, j)
+     */
+    public double cofactor(int i, int j)
+    {
+        return Math.pow(-1, i + j) * minor(i, j);
+    }
+
+    /**
      * Returns the size of the matrix, formatted to "i x j"
+     *
      * @return A string representing the size of the matrix
      */
     public String getSize()
@@ -149,6 +236,7 @@ public class Matrix
 
     /**
      * Returns the matrix as an array
+     *
      * @return The contents of the matrix as an array
      */
     public double[][] asArray()
@@ -158,6 +246,7 @@ public class Matrix
 
     /**
      * Returns a string representation of the array
+     *
      * @return All the values in the array, formatted into a string
      */
     public String toString()
@@ -180,6 +269,7 @@ public class Matrix
 
     /**
      * Adds two matrices together and returns the result
+     *
      * @param m1 The first matrix to be added
      * @param m2 The second matrix to be added
      * @return The result of m1 + m2
@@ -207,6 +297,7 @@ public class Matrix
 
     /**
      * Subtracts two matrices and returns the result
+     *
      * @param m1 The first matrix to be subtracted
      * @param m2 The second matrix to be subtracted
      * @return The result of m1 - m2
@@ -214,27 +305,13 @@ public class Matrix
      */
     public static Matrix subtract(Matrix m1, Matrix m2) throws MatrixArithmeticException
     {
-        if(m1.getRows() != m2.getRows() || m1.getCols() != m2.getCols())
-        {
-            throw new MatrixArithmeticException("Matrices do not have the same dimensions");
-        }
-
-        Matrix result = new Matrix(m1.getRows(), m1.getCols());
-
-        for(int i = 0; i < result.getRows(); i++)
-        {
-            for(int j = 0; j < result.getCols(); j++)
-            {
-                result.set(i, j, m1.get(i, j) - m2.get(i, j));
-            }
-        }
-
-        return result;
+        return Matrix.add(m1, Matrix.multiply(m2, -1));
     }
 
     /**
      * Multiplies a matrix by a scalar
-     * @param m The matrix to be multiplied
+     *
+     * @param m      The matrix to be multiplied
      * @param scalar The scalar to be multiplied
      * @return The value of scalar * m
      */
@@ -255,6 +332,7 @@ public class Matrix
 
     /**
      * Multiplies two matrices together
+     *
      * @param m1 The first matrix to be multiplied
      * @param m2 The second matrix to be multiplied
      * @return The value of m1 * m2
@@ -289,6 +367,7 @@ public class Matrix
 
     /**
      * Returns the transposition of m
+     *
      * @param m The matrix to be transposed
      * @return The transposed version of m
      */
@@ -307,40 +386,10 @@ public class Matrix
         return result;
     }
 
-    /**
-     * Returns the determinant of a matrix m
-     * @param m The matrix to find the determinant for
-     * @return The determinant of m
-     * @throws MatrixFormatException If the matrix is not square
-     */
-    public static double determinant(Matrix m) throws MatrixFormatException
-    {
-        //TODO: fix
-        if(m.getRows() != m.getCols())
-        {
-            throw new MatrixFormatException("Matrix must be square");
-        }
-
-        if(m.getRows() == 2)
-        {
-            return m.get(0, 0) * m.get(1, 1) - m.get(0, 1) * m.get(1, 0);
-        }
-        else
-        {
-            double sum = 0;
-
-            //iterate along the top row since row/col choice is arbitrary
-            for(int i = 0; i < m.getCols(); i++)
-            {
-                sum += cofactor(m, 0, i) * minor(m, 0, i);
-            }
-
-            return sum;
-        }
-    }
 
     /**
      * Returns the inverse matrix of a matrix m
+     *
      * @param m The matrix to invert
      * @return The inverse of m
      * @throws MatrixFormatException If the matrix is not square
@@ -353,7 +402,7 @@ public class Matrix
             throw new MatrixFormatException("Matrix must be square");
         }
 
-        double determinant = Matrix.determinant(m);
+        double determinant = m.determinant();
 
         Matrix result = new Matrix(m.getRows(), m.getCols());
 
@@ -361,7 +410,7 @@ public class Matrix
         {
             for(int j = 0; j < m.getCols(); j++)
             {
-                result.set(i, j, minor(m, i, j));
+                result.set(i, j, m.minor(i, j));
             }
         }
 
@@ -371,61 +420,10 @@ public class Matrix
         return result;
     }
 
-    /**
-     * Returns the minor of matrix m at position (i, j)
-     * @param m The matrix to find the minor in
-     * @param i The index of the row of the minor (0- indexed)
-     * @param j The index of the column of the minor (0-indexed)
-     * @return The minor of matrix m at position (i, j)
-     */
-    public static double minor(Matrix m, int i, int j)
-    {
-        Matrix trimmed = new Matrix(m.getRows() - 1, m.getCols() - 1);
-
-        int rowIndex = 0;
-        int colIndex = 0;
-
-        for(int a = 0; a < m.getRows(); a++)
-        {
-            if(a == i) a++;
-
-            for(int b = 0; b < m.getCols(); b++)
-            {
-                if(b == j) b++;
-
-                try
-                {
-                    trimmed.set(rowIndex, colIndex, m.get(a, b));
-                }
-                catch(MatrixIndexOutOfBoundsException e)
-                {
-                    //TODO: probably fix this lazy exception hacking
-                }
-
-                colIndex++;
-            }
-
-            colIndex = 0;
-            rowIndex++;
-        }
-
-        return determinant(trimmed);
-    }
-
-    /**
-     * Returns the cofactor of matrix m at position (i, j)
-     * @param m The matrix to find the cofactor in
-     * @param i The index of the row of the cofactor (0-indexed)
-     * @param j The index of the column of the cofactor (0-indexed)
-     * @return The cofactor of matrix m at position (i, j)
-     */
-    public static double cofactor(Matrix m, int i, int j)
-    {
-        return Math.pow(-1, i + j) * minor(m, i, j);
-    }
 
     /**
      * Returns an identity matrix of specified size
+     *
      * @param n The size of the resulting identity matrix, which will be n x n
      * @return An identity matrix of size n X n
      */
