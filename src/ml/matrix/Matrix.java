@@ -246,10 +246,7 @@ public class Matrix
 
         for(int i = 0; i < contents.length; i++)
         {
-            for(int j = 0; j < contents[i].length; j++)
-            {
-                newArray[i][j] = contents[i][j];
-            }
+            System.arraycopy(contents[i], 0, newArray[i], 0, contents[i].length);
         }
 
         return newArray;
@@ -414,11 +411,6 @@ public class Matrix
         if(m.getRows() != m.getCols())
         {
             throw new MatrixFormatException("Matrix must be square");
-        }
-
-        if(m.determinant() == 0)
-        {
-            throw new MatrixFormatException("Matrix is singular!");
         }
 
         for(int i = 0; i < m.getRows(); i++)

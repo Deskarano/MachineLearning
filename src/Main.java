@@ -1,28 +1,30 @@
-import ml.charts.Graph;
 
-import ml.charts.elements.Scatter;
-import ml.charts.elements.functions.*;
 import ml.matrix.Matrix;
-import ml.regression.LinearRegression;
 
-import java.util.Arrays;
+import java.util.Random;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        double[][] nums =
-                {
-                        {3, 2, 6, 3},
-                        {7, 34, 74, 6},
-                        {83, 2, 4, 56},
-                        {7, 2, 3, 4}
-                };
+        double[][] nums = new double[5000][5000];
+
+        Random rand = new Random();
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            for(int j = 0; j < nums[i].length; j++)
+            {
+                nums[i][j] = rand.nextDouble();
+            }
+        }
 
         Matrix m = new Matrix(nums);
-        Matrix inv = Matrix.inverse(m);
 
-        System.out.println(Matrix.multiply(m, inv));
+        System.out.println("Starting...");
+        long start = System.currentTimeMillis();
+        Matrix.inverse(m);
+        System.out.println(System.currentTimeMillis() - start);
     }
 }
 
