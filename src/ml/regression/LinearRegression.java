@@ -3,6 +3,8 @@ package ml.regression;
 import ml.matrix.*;
 import ml.regression.exceptions.*;
 
+import java.util.Arrays;
+
 public class LinearRegression
 {
     /**
@@ -128,6 +130,31 @@ public class LinearRegression
         }
     }
 
+    public void normalEquation()
+    {
+        double[][] xArray = new double[x.length + 1][x[0].length];
+
+        for(int i = 0; i < x[0].length; i++)
+        {
+            xArray[0][i] = 1;
+        }
+
+        System.arraycopy(x, 0, xArray, 1, x.length);
+
+        Matrix mX = Matrix.transpose(new Matrix(xArray));
+        Matrix mY = new Vector(y);
+
+        Matrix result = Matrix.multiply(Matrix.transpose(mX), mX);
+        result = Matrix.inverse(result);
+        result = Matrix.multiply(result, Matrix.transpose(mX));
+        result = Matrix.multiply(result, mY);
+
+        for(int i = 0; i < result.getRows(); i++)
+        {
+            coefficients.set(i, result.get(i, 0));
+        }
+    }
+
     /**
      * Gets the current prediction of the regression using the current coefficients
      *
@@ -160,5 +187,4 @@ public class LinearRegression
     {
         return coefficients;
     }
-
 }

@@ -11,15 +11,14 @@ public class Scatter implements Graphable
     private double[][] data;
 
     private int pointSize;
-    private int color;
     private boolean filled;
 
     public Scatter(double[][] data) throws DataFormatException
     {
-        this(data, 3, 0xFFFF0000, true);
+        this(data, 3, true);
     }
 
-    public Scatter(double[][] data, int pointSize, int color, boolean filled) throws DataFormatException
+    public Scatter(double[][] data, int pointSize, boolean filled) throws DataFormatException
     {
         if(data.length > 2)
         {
@@ -29,7 +28,6 @@ public class Scatter implements Graphable
         this.data = data;
 
         this.pointSize = pointSize;
-        this.color = color;
         this.filled = filled;
     }
 

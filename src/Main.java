@@ -1,5 +1,9 @@
 
-import ml.matrix.Matrix;
+import ml.charts.Graph;
+import ml.charts.elements.Scatter;
+import ml.charts.elements.functions.PolynomialFunction;
+import ml.charts.elements.functions.TrigFunction;
+import ml.regression.LinearRegression;
 
 import java.util.Random;
 
@@ -7,24 +11,28 @@ public class Main
 {
     public static void main(String[] args)
     {
-        double[][] nums = new double[5000][5000];
-
         Random rand = new Random();
+        double[][] nums = new double[2][100];
 
-        for(int i = 0; i < nums.length; i++)
+        for(int i = 0; i < nums[0].length; i++)
         {
-            for(int j = 0; j < nums[i].length; j++)
-            {
-                nums[i][j] = rand.nextDouble();
-            }
+            nums[0][i] = i;
+            nums[1][i] = i + (rand.nextBoolean() ? rand.nextInt(5) : -rand.nextInt(5));
         }
 
-        Matrix m = new Matrix(nums);
+        LinearRegression l = new LinearRegression(nums);
+        l.normalEquation();
 
-        System.out.println("Starting...");
-        long start = System.currentTimeMillis();
-        Matrix.inverse(m);
-        System.out.println(System.currentTimeMillis() - start);
+        Graph g = new Graph(500, 500);
+        Scatter s = new Scatter(nums);
+        PolynomialFunction p = new PolynomialFunction(l);
+        TrigFunction t = new TrigFunction(TrigFunction.SIN);
+
+        g.add(s, 0xFFFF0000);
+        g.add(p, 0xFF0000FF);
+        g.add(t, 0xFF00FF00);
+
+        g.display();
     }
 }
 
