@@ -229,6 +229,7 @@ public class Matrix
      *
      * @return A string representing the size of the matrix
      */
+
     public String getSize()
     {
         return rows + "x" + cols;
@@ -241,8 +242,19 @@ public class Matrix
      */
     public double[][] asArray()
     {
-        return contents;
+        double[][] newArray = new double[contents.length][contents[0].length];
+
+        for(int i = 0; i < contents.length; i++)
+        {
+            for(int j = 0; j < contents[i].length; j++)
+            {
+                newArray[i][j] = contents[i][j];
+            }
+        }
+
+        return newArray;
     }
+
 
     /**
      * Returns a string representation of the array
@@ -261,7 +273,10 @@ public class Matrix
                 result += " ";
             }
 
-            result += "\n";
+            if(i != rows - 1)
+            {
+                result += "\n";
+            }
         }
 
         return result;
@@ -388,7 +403,7 @@ public class Matrix
 
 
     /**
-     * Returns the inverse matrix of a matrix m
+     * Calculates the inverse matrix of a matrix m using Gaussian elimination
      *
      * @param m The matrix to invert
      * @return The inverse of m
@@ -396,30 +411,68 @@ public class Matrix
      */
     public static Matrix inverse(Matrix m) throws MatrixFormatException
     {
-        //TODO: fix this method
         if(m.getRows() != m.getCols())
         {
             throw new MatrixFormatException("Matrix must be square");
         }
 
-        double determinant = m.determinant();
-
-        Matrix result = new Matrix(m.getRows(), m.getCols());
+        if(m.determinant() == 0)
+        {
+            throw new MatrixFormatException("Matrix is singular!");
+        }
 
         for(int i = 0; i < m.getRows(); i++)
         {
-            for(int j = 0; j < m.getCols(); j++)
+            if(m.get(i, i) == 0)
             {
-                result.set(i, j, m.minor(i, j));
+                throw new MatrixFormatException("Matrix has 0s along diagonals");
             }
         }
 
-        result = Matrix.transpose(result);
-        result = Matrix.multiply(result, 1 / determinant);
+        double[][] mArray = m.asArray();
+        double[][] resultArray = Matrix.identityMatrix(m.getRows()).asArray();
 
-        return result;
+        for(int i = 0; i < mArray.length; i++)
+        {
+            double divisor = mArray[i][i];
+
+            for(int j = 0; j < mArray[i].length; j++)
+            {
+                mArray[i][j] /= divisor;
+                resultArray[i][j] /= divisor;
+            }
+
+            for(int i2 = 0; i2 < mArray.length; i2++)
+            {
+                if(i2 != i)
+                {
+                    double multiplier = mArray[i2][i];
+
+                    for(int j = 0; j < mArray[i2].length; j++)
+                    {
+                        mArray[i2][j] -= mArray[i][j] * multiplier;
+                        resultArray[i2][j] -= resultArray[i][j] * multiplier;
+                    }
+                }
+            }
+
+        }
+
+        return new Matrix(resultArray);
     }
 
+    private static void printArray(double[][] nums)
+    {
+        for(int i = 0; i < nums.length; i++)
+        {
+            for(int j = 0; j < nums[i].length; j++)
+            {
+                System.out.print(nums[i][j] + " ");
+            }
+
+            System.out.println();
+        }
+    }
 
     /**
      * Returns an identity matrix of specified size
