@@ -12,7 +12,7 @@ class OperatedFunction extends Function
     private Function f1;
     private Function f2;
 
-    int type;
+    private int type;
 
     OperatedFunction(Function f1, Function f2, int type)
     {
@@ -22,6 +22,21 @@ class OperatedFunction extends Function
         this.type = type;
     }
 
+    int getType()
+    {
+        return type;
+    }
+
+    Function getF1()
+    {
+        return f1;
+    }
+
+    Function getF2()
+    {
+        return f2;
+    }
+
     @Override
     public double getValue(double x)
     {
@@ -29,19 +44,24 @@ class OperatedFunction extends Function
         {
             case ADD:
                 return f1.getValue(x) + f2.getValue(x);
+
             case SUBTRACT:
                 return f1.getValue(x) - f2.getValue(x);
+
             case MULTIPLY:
                 return f1.getValue(x) * f2.getValue(x);
+
             case DIVIDE:
                 return f1.getValue(x) / f2.getValue(x);
+
             case POW:
                 return Math.pow(f1.getValue(x), f2.getValue(x));
+
             case CONCATENATE:
                 return f1.getValue(f2.getValue(x));
-        }
 
-        //should never be reached
-        return 0;
+            default:
+                throw new IllegalArgumentException("what");
+        }
     }
 }

@@ -12,10 +12,12 @@ public class TrigFunction extends Function
     private static Function cos;
     private static Function sin;
 
+    private int type;
     private Function base;
 
     public TrigFunction(int type)
     {
+        this.type = type;
         if(cos == null || sin == null)
         {
             //generate the taylor polynomial of cos at x = pi (so we can compress all arguments to the range [0, 2pi)
@@ -60,7 +62,15 @@ public class TrigFunction extends Function
             case COT:
                 base = Function.divide(cos, sin);
                 break;
+
+            default:
+                throw new IllegalArgumentException("what");
         }
+    }
+
+    int getType()
+    {
+        return type;
     }
 
     @Override

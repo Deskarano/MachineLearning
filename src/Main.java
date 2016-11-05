@@ -1,36 +1,21 @@
-
 import ml.charts.Graph;
-import ml.charts.elements.Scatter;
+import ml.charts.elements.functions.Function;
 import ml.charts.elements.functions.PolynomialFunction;
 import ml.charts.elements.functions.TrigFunction;
-import ml.regression.LinearRegression;
-
-import java.util.Random;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        Random rand = new Random();
-        double[][] nums = new double[2][100];
+        Function f1= new PolynomialFunction(0, 0, 1);
+        Function f2 = new PolynomialFunction(0, 2);
 
-        for(int i = 0; i < nums[0].length; i++)
-        {
-            nums[0][i] = i;
-            nums[1][i] = i + (rand.nextBoolean() ? rand.nextInt(5) : -rand.nextInt(5));
-        }
-
-        LinearRegression l = new LinearRegression(nums);
-        l.normalEquation();
+        Function result = Function.concatenate(f1, f2);
+        result = Function.multiply(f1, result);
 
         Graph g = new Graph(500, 500);
-        Scatter s = new Scatter(nums);
-        PolynomialFunction p = new PolynomialFunction(l);
-        TrigFunction t = new TrigFunction(TrigFunction.SIN);
 
-        g.add(s, 0xFFFF0000);
-        g.add(p, 0xFF0000FF);
-        g.add(t, 0xFF00FF00);
+        g.add(result, 0xFF00FF00);
 
         g.display();
     }
