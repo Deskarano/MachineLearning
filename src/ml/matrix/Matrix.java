@@ -398,13 +398,12 @@ public class Matrix
         return result;
     }
 
-
     /**
      * Calculates the inverse matrix of a matrix m using Gaussian elimination
      *
      * @param m The matrix to invert
      * @return The inverse of m
-     * @throws MatrixFormatException If the matrix is not square
+     * @throws MatrixFormatException If the matrix is not square or has 0s along the diagonals
      */
     public static Matrix inverse(Matrix m) throws MatrixFormatException
     {
@@ -451,19 +450,6 @@ public class Matrix
         }
 
         return new Matrix(resultArray);
-    }
-
-    private static void printArray(double[][] nums)
-    {
-        for(int i = 0; i < nums.length; i++)
-        {
-            for(int j = 0; j < nums[i].length; j++)
-            {
-                System.out.print(nums[i][j] + " ");
-            }
-
-            System.out.println();
-        }
     }
 
     /**
