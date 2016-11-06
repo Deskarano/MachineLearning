@@ -165,9 +165,11 @@ public abstract class Function implements Graphable
                 newCoefficients[i - 1] = i * coefficients[i];
             }
 
-            System.out.println(Arrays.toString(newCoefficients));
-
             return new PolynomialFunction(newCoefficients);
+        }
+        else if(f instanceof LogFunction)
+        {
+            return Function.divide(1, Function.multiply(new PolynomialFunction(0, 1), Math.log(((LogFunction) f).getBase())));
         }
         else
         {
@@ -200,8 +202,8 @@ public abstract class Function implements Graphable
             }
             else if(type == OperatedFunction.POW)
             {
-                //TODO
-                throw new IllegalArgumentException("will be implemented soon");
+                //TODO: fix
+                return Function.multiply(Function.concatenate(new LogFunction(), ((OperatedFunction) f).getF1()), f);
             }
             else if(type == OperatedFunction.CONCATENATE)
             {
