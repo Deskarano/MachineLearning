@@ -4,8 +4,6 @@ import ml.charts.DrawableImage;
 import ml.charts.Graph;
 import ml.charts.elements.Graphable;
 
-import java.util.Arrays;
-
 public abstract class Function implements Graphable
 {
     public abstract double getValue(double x);
@@ -131,23 +129,23 @@ public abstract class Function implements Graphable
 
             switch(type)
             {
-                case TrigFunction.SIN:
-                    return new TrigFunction(TrigFunction.COS);
+                case TrigFunction.sin:
+                    return TrigFunction.COS;
 
-                case TrigFunction.COS:
-                    return Function.multiply(new TrigFunction(TrigFunction.SIN), -1);
+                case TrigFunction.cos:
+                    return Function.multiply(TrigFunction.SIN, -1);
 
-                case TrigFunction.TAN:
-                    return Function.pow(new TrigFunction(TrigFunction.SEC), 2);
+                case TrigFunction.tan:
+                    return Function.pow(TrigFunction.SEC, 2);
 
-                case TrigFunction.SEC:
-                    return Function.multiply(new TrigFunction(TrigFunction.SEC), new TrigFunction(TrigFunction.TAN));
+                case TrigFunction.sec:
+                    return Function.multiply(TrigFunction.SEC, TrigFunction.TAN);
 
-                case TrigFunction.CSC:
-                    return Function.multiply(Function.multiply(new TrigFunction(TrigFunction.CSC), -1), new TrigFunction(TrigFunction.COT));
+                case TrigFunction.csc:
+                    return Function.multiply(Function.multiply(TrigFunction.CSC, -1), TrigFunction.COT);
 
-                case TrigFunction.COT:
-                    return Function.multiply(Function.pow(new TrigFunction(TrigFunction.CSC), 2), -1);
+                case TrigFunction.cot:
+                    return Function.multiply(Function.pow(TrigFunction.CSC, 2), -1);
 
                 default:
                     //should never be called
@@ -156,7 +154,11 @@ public abstract class Function implements Graphable
         }
         else if(f instanceof PolynomialFunction)
         {
-            //TODO: check that newCoefficients size is not less than 0
+            if(((PolynomialFunction) f).getCoefficients().length == 0)
+            {
+                return new PolynomialFunction(0);
+            }
+
             double[] coefficients = ((PolynomialFunction) f).getCoefficients();
             double[] newCoefficients = new double[coefficients.length - 1];
 
@@ -213,6 +215,18 @@ public abstract class Function implements Graphable
             {
                 throw new IllegalArgumentException("what");
             }
+        }
+    }
+
+    public static int numNested(Function f)
+    {
+        if(f instanceof OperatedFunction)
+        {
+            return numNested(((OperatedFunction) f).getF1()) + numNested(((OperatedFunction) f).getF2());
+        }
+        else
+        {
+            return 1;
         }
     }
 }

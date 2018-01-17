@@ -19,9 +19,9 @@ public class PolynomialFunction extends Function
 
     public String toString()
     {
-        String result = "y = " + coefficients[0] + " + ";
+        String result = "y = ";
 
-        for(int i = 1; i < coefficients.length; i++)
+        for(int i = 0; i < coefficients.length; i++)
         {
             if(coefficients[i] != 0)
             {

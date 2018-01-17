@@ -3,8 +3,6 @@ package ml.regression;
 import ml.matrix.*;
 import ml.regression.exceptions.*;
 
-import java.util.Arrays;
-
 public class LinearRegression
 {
     /**
